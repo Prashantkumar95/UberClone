@@ -6,6 +6,7 @@ const cors = require('cors');
 const connectDB = require('./db/db'); 
 const userRoutes = require('./routes/user.routes')
 const app = express();
+const cookieParser = require('cookie-parser');
 
 // Connect to the database
 connectDB();
@@ -14,6 +15,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true }))
+app.use(cookieParser());
 
 // Define routes
 app.get('/', (req, res) => {
