@@ -1,62 +1,59 @@
-const {Schema,model} = require("mongoose");
-const bcrypt =require('bcrypt');
-const jwt =require('jsonwebtoken');
-  
-  const userSchema = new Schema({
-    fullname: {
-        firstame:{
-            type: String,
-            required: true,
-            minlength:[3,'first name should we of three charcter'],
-            maxlength: 50
-        },
-        lasttame:{
-            type: String,
-            minlength:[3,'first name should we of three charcter'],
-            maxlength: 50
-        },
-   
-        lasttame:{
-            type: String,
-            minlength:[3,'first name should we of three charcter'],
-            maxlength: 50
-        },
-   
-        email:{
-            type: String,
-            require:true,
-            unique:true,
-            minlength:[3,'first name should we of three charcter'],
-            maxlength: 50
-        },
-   
-        password:{
-            type: String,
-            require:true,
-            select:false,
-            
+const { Schema, model } = require("mongoose");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-        },
-        sockedId:{
-          type:String,
-        }
-   
+// Define the user schema
+const userSchema = new Schema({
+  fullname: {
+    firstname: {  // Corrected the typo here
+      type: String,
+      required: true,
+      minlength: [3, 'First name should be of at least three characters'],
+      maxlength: 50
     },
-    
-  });
-  
-  userSchema.methods.generateAuthToken = function(){
-      const token = jwt.sign({_id: this._id },process.env.jwt_SECRET)
-      return token
+    lastname: {  // Corrected the typo here
+      type: String,
+      required: true,
+      minlength: [3, 'Last name should be of at least three characters'],
+      maxlength: 50
+    }
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: [3, 'Email should be of at least three characters'],
+    maxlength: 50
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false // Don't select password by default
+  },
+  socketId: {
+    type: String,
   }
-  
-  userSchema.methods.comparePassword = async function(password){
-     return await bcrypt.compare(password,this.password);
-  }
-  userSchema.statics.hashPassword = async function(password){
-     return await bcrypt.compare(password,10);
-  }
-  
-  const userModel = model("user", userSchema)
-  
-  module.exports = userModel
+});
+
+// Method to generate an authentication token
+userSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return token;
+};
+
+// Method to compare plain password with hashed password
+userSchema.methods.comparePassword = async function(password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+// Static method to hash password
+userSchema.statics.hashPassword = async function(password) {
+  const salt = await bcrypt.genSalt(10); // Generate salt
+  const hashedPassword = await bcrypt.hash(password, salt); // Hash the password
+  return hashedPassword;
+};
+
+// Create the model
+const userModel = model("User", userSchema);
+
+module.exports = userModel;
