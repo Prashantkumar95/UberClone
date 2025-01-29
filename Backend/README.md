@@ -21,12 +21,31 @@ The request body should be a JSON object containing the following fields:
 - `400 Bad Request`: The request was invalid. The response will contain the validation errors.
 
 ### Example Request
-- `user`: (object):
-  - `firstname`: (string,required) The first name of the user (minimum 3 characters).
-  - `lastname`: (string) The last name of the user (minimum 3 characters).
-- `email`: (string, User's email address) The email address of the user (must be a valid email).
-- `password`:(string) The password for the user (minimum 6 characters).
-- `token`:(string) JWt token
+```json
+{
+  "fullname": {
+    "firstname": "johndoe",
+    "lastname": "doe"
+  },
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+```
+
+### Example Response
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "_id": "60c72b2f9b1e8b001c8e4e1a",
+    "fullname": {
+      "firstname": "johndoe",
+      "lastname": "doe"
+    },
+    "email": "johndoe@example.com"
+  }
+}
+```
 
 ## `/users/login` Endpoint
 
@@ -49,8 +68,8 @@ The request body should be a JSON object containing the following fields:
 ### Example Request
 ```json
 {
-  "email": "test@test.com",
-  "password": "test_password"
+  "email": "johndoe@example.com",
+  "password": "password123"
 }
 ```
 
@@ -61,10 +80,10 @@ The request body should be a JSON object containing the following fields:
   "user": {
     "_id": "60c72b2f9b1e8b001c8e4e1a",
     "fullname": {
-      "firstname": "test_firstname",
-      "lastname": "test_lastname"
+      "firstname": "johndoe",
+      "lastname": "doe"
     },
-    "email": "test@test.com"
+    "email": "johndoe@example.com"
   }
 }
 ```
@@ -76,3 +95,62 @@ The request body should be a JSON object containing the following fields:
 
 ### Endpoint
 `POST /users/login`
+
+## `/users/profile` Endpoint
+
+### Description
+This endpoint is used to get the profile of the logged-in user.
+
+### Method
+`GET`
+
+### Response
+- `200 OK`: The user's profile was successfully retrieved. The response will contain the user details.
+- `401 Unauthorized`: The user is not authenticated.
+
+### Example Response
+```json
+{
+  "_id": "60c72b2f9b1e8b001c8e4e1a",
+  "fullname": {
+    "firstname": "johndoe",
+    "lastname": "doe"
+  },
+  "email": "johndoe@example.com"
+}
+```
+
+### Status Codes
+- `200 OK`: User profile successfully retrieved.
+- `401 Unauthorized`: User not authenticated.
+
+### Endpoint
+`GET /users/profile`
+
+## `/users/logout` Endpoint
+
+### Description
+This endpoint is used to log out the currently logged-in user and blacklist the token provided in cookies or headers.
+
+### Method
+`GET`
+
+### Authentication
+This endpoint requires a valid JWT token.
+
+### Response
+- `200 OK`: The user was successfully logged out. The response will contain a success message.
+
+### Example Response
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+### Status Codes
+- `200 OK`: User successfully logged out.
+- `401 Unauthorized`: User not authenticated.
+
+### Endpoint
+`GET /users/logout`
