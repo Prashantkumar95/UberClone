@@ -154,3 +154,55 @@ This endpoint requires a valid JWT token.
 
 ### Endpoint
 `GET /users/logout`
+
+## `/captains/register` Endpoint
+
+### Description
+This endpoint is used to register a new captain.
+
+### Method
+`POST`
+
+### Request Body
+The request body should be a JSON object containing the following fields:
+- `fullname`: An object containing:
+  - `firstname`: The first name of the captain (minimum 3 characters).
+  - `lastname`: The last name of the captain (minimum 3 characters).
+- `email`: The email address of the captain (must be a valid email).
+- `password`: The password for the captain (minimum 6 characters).
+- `vehicle`: An object containing:
+  - `color`: The color of the vehicle (minimum 3 characters).
+  - `plate`: The plate number of the vehicle (minimum 3 characters).
+  - `capacity`: The capacity of the vehicle (must be greater than 0).
+  - `vehicleType`: The type of the vehicle (must be one of 'car', 'motorcycle', 'auto').
+
+### Response
+- `201 Created`: The captain was successfully created. The response will contain the captain details.
+- `400 Bad Request`: The request was invalid. The response will contain the validation errors.
+
+
+
+### Example Response
+```json
+{
+  "_id": "60c72b2f9b1e8b001c8e4e1a",
+  "fullname": {
+    "firstname": "john",
+    "lastname": "doe"
+  },
+  "email": "johndoe@example.com",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Status Codes
+- `201 Created`: Captain successfully created.
+- `400 Bad Request`: Validation errors in the request body.
+
+### Endpoint
+`POST /captains/register`

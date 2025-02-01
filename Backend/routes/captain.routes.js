@@ -11,10 +11,8 @@ router.post('/register',[
     body('vehicle.plate').isLength({min:3}).withMessage("Plate must be 3 character long"),
     body('vehicle.capacity').isInt({min:1}).withMessage("Capacity must be greater than 0"),
     body('vehicle.vehicleType').isIn(['car','motorcycle','auto']).withMessage("Invalid vehicle type"),
-
-
 ],
    captainController.registerCaptain
 )
 
-module.exports = router;    
+module.exports = router;
