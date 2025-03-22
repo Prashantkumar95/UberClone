@@ -24,11 +24,11 @@ The request body should be a JSON object containing the following fields:
 ```json
 {
   "fullname": {
-    "firstname": "johndoe",
-    "lastname": "doe"
+    "firstname": "John", // minimum 3 characters
+    "lastname": "Doe" // minimum 3 characters
   },
-  "email": "johndoe@example.com",
-  "password": "password123"
+  "email": "john.doe@example.com", // must be a valid email
+  "password": "password123" // minimum 6 characters
 }
 ```
 
@@ -39,13 +39,20 @@ The request body should be a JSON object containing the following fields:
   "user": {
     "_id": "60c72b2f9b1e8b001c8e4e1a",
     "fullname": {
-      "firstname": "johndoe",
-      "lastname": "doe"
+      "firstname": "John",
+      "lastname": "Doe"
     },
-    "email": "johndoe@example.com"
+    "email": "john.doe@example.com"
   }
 }
 ```
+
+### Status Codes
+- `201 Created`: User successfully registered.
+- `400 Bad Request`: Validation errors in the request body.
+
+### Endpoint
+`POST /users/register`
 
 ## `/users/login` Endpoint
 
@@ -180,8 +187,6 @@ The request body should be a JSON object containing the following fields:
 - `201 Created`: The captain was successfully created. The response will contain the captain details.
 - `400 Bad Request`: The request was invalid. The response will contain the validation errors.
 
-
-
 ### Example Response
 ```json
 {
@@ -206,3 +211,4 @@ The request body should be a JSON object containing the following fields:
 
 ### Endpoint
 `POST /captains/register`
+ 
